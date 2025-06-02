@@ -23,6 +23,16 @@ export default defineNuxtConfig({
     ssr: {
       noExternal: ['vuetify'],
     },
+    server: {
+      proxy: {
+        // Proxying /api requests to the backend
+        '/api': {
+          // Assuming your FastAPI backend runs on http://localhost:8000
+          target: 'http://localhost:8000',
+          changeOrigin: true,
+        }
+      }
+    },
   },
 
   css: [],
