@@ -6,3 +6,6 @@
 # Ignore Python bytecode files
 __pycache__/
 *.py[cod]
+
+logs/
+*.log
