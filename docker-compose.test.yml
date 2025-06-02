@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:17
+    container_name: test-db-postgres
+    env_file:
+      - ./.env.testing
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data_test:/var/lib/postgresql/data/
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aiph-zeta-testuser -d aiph-zeta-testing"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: test-backend
+    env_file:
+      - ./.env.testing
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8001:8001"
+    volumes:
+      - ../backend/logs:/app/logs
+
+volumes:
+  postgres_data_test:
+    name: test-db-data
