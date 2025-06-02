@@ -7,7 +7,7 @@ services:
     env_file:
       - ./.env
     ports:
-      - "5434:5432"
+      - "5432:5432"
     volumes:
       - postgres_data_prod:/var/lib/postgresql/data/
     restart: unless-stopped
@@ -20,7 +20,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/Dockerfile.production
+      dockerfile: backend/Dockerfile.prod
     container_name: prod-backend
     env_file:
       - ./.env
@@ -30,7 +30,19 @@ services:
     ports:
       - "8002:8002"
     volumes:
-      - ./backend/logs:/app/logs
+      - ./backend/logs/prod:/app/logs
+    restart: unless-stopped
+ 
+ # Nginx service builds the frontend and serves it
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile.prod
+    container_name: prod-frontend-nginx
+    ports:
+      - "80:80" # Exposes the app on http://localhost:8080
+    depends_on:
+      - backend # Ensures backend starts before nginx
     restart: unless-stopped
 
 volumes:

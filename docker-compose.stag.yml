@@ -29,6 +29,17 @@ services:
     volumes:
       - ./backend/logs/stag:/app/logs
 
+  # Nginx service builds the frontend and serves it
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile.stag
+    container_name: stag-frontend-nginx
+    ports:
+      - "8080:80" # Exposes the app on http://localhost:8080
+    depends_on:
+      - backend # Ensures backend starts before nginx
+
 volumes:
   postgres_data_stag:
     name: stag-db-data

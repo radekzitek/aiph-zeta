@@ -28,7 +28,6 @@ COPY .env.stag .env
 
 # Create logs directory
 RUN mkdir -p /app/logs
-RUN mkdir -p /app/logs/stag
 
 # Expose port (changed to 8001)
 EXPOSE 8001

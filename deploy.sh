@@ -38,7 +38,10 @@ if [[ "$ENV" == "devl" ]]; then
   echo "Waiting 5 seconds for services to be ready..."
   sleep 5
   alembic upgrade head
-  uvicorn app.main:app --reload
+  uvicorn app.main:app --reload &
+  cd ../frontend
+  pnpm install
+  pnpm dev
   cd ..
   docker compose -f "$COMPOSE_FILE" -p "aiph-zeta-$ENV" down
 fi

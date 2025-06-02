@@ -28,7 +28,6 @@ COPY .env.prod .env
 
 # Create logs directory
 RUN mkdir -p /app/logs
-RUN mkdir -p /app/logs/prod
 
 # Expose port (changed to 8002)
 EXPOSE 8002
