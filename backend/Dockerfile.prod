@@ -23,11 +23,12 @@ RUN pip install --upgrade pip && pip install -r requirements.txt && pip install 
 # Copy backend code
 COPY backend/ .
 
-# Copy .env.production as .env for test builds
-COPY .env.production .env
+# Copy .env.prod as .env for prod builds
+COPY .env.prod .env
 
 # Create logs directory
 RUN mkdir -p /app/logs
+RUN mkdir -p /app/logs/prod
 
 # Expose port (changed to 8002)
 EXPOSE 8002

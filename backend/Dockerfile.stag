@@ -23,11 +23,12 @@ RUN pip install --upgrade pip && pip install -r requirements.txt && pip install 
 # Copy backend code
 COPY backend/ .
 
-# Copy .env.testing as .env for test builds
-COPY .env.testing .env
+# Copy .env.stag as .env for stag builds
+COPY .env.stag .env
 
 # Create logs directory
 RUN mkdir -p /app/logs
+RUN mkdir -p /app/logs/stag
 
 # Expose port (changed to 8001)
 EXPOSE 8001

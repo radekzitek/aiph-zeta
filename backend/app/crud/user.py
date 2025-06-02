@@ -8,7 +8,7 @@ from sqlalchemy import select
 import uuid
 import logging
 
-logger = logging.getLogger("__name__")
+logger = logging.getLogger(__name__)
 
 
 def get_user(db: Session, user_id: str) -> Optional[User]:

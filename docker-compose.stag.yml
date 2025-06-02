@@ -1,16 +1,13 @@
-version: "3.9"
-
 services:
   db:
     image: postgres:17
-    container_name: prod-db-postgres
+    container_name: stag-db-postgres
     env_file:
       - ./.env
     ports:
-      - "5434:5432"
+      - "5433:5432"
     volumes:
-      - postgres_data_prod:/var/lib/postgresql/data/
-    restart: unless-stopped
+      - postgres_data_stag:/var/lib/postgresql/data/
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
@@ -20,20 +17,18 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/Dockerfile.production
-    container_name: prod-backend
+      dockerfile: backend/Dockerfile.stag
+    container_name: stag-backend
     env_file:
       - ./.env
     depends_on:
       db:
         condition: service_healthy
     ports:
-      - "8002:8002"
+      - "8001:8001"
     volumes:
-      - ./backend/logs:/app/logs
-    restart: unless-stopped
+      - ./backend/logs/stag:/app/logs
 
 volumes:
-  postgres_data_prod:
-    name: prod-db-data
-
+  postgres_data_stag:
+    name: stag-db-data
