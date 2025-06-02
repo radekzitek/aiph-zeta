@@ -13,7 +13,7 @@
 import { ref, onMounted } from 'vue';
 
 // Define reactive state
-const users = ref<any[]>([]);
+const users = ref<User[]>([]);
 const loading = ref(false);
 const error = ref<string | null>(null);
 
@@ -29,9 +29,13 @@ async function fetchUsers() {
     // This will call: GET /api/v1/users
     const response = await $api.get('/users/');
     users.value = response.data;
-  } catch (err: any) {
-    console.error('Failed to fetch users:', err);
-    error.value = 'Failed to load user data.';
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error('Failed to fetch users:', err);
+      error.value = err.message;
+    } else {
+      error.value = 'An unknown error occurred.';
+    }
   } finally {
     loading.value = false;
   }
